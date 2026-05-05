@@ -1,1 +1,7 @@
 pip freeze > backend/requirements.txt
+flask
+flask_sqlalchemy
+flask_bcrypt
+flask_jwt_extended
+flask-cors
+gunicorn
