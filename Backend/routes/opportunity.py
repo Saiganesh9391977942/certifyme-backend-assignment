@@ -5,24 +5,20 @@ from extensions import db
 
 opp_bp = Blueprint('opportunities', __name__)
 
+# Allowed fields for update (prevents overwriting id, admin_id, created_at)
+ALLOWED_UPDATE_FIELDS = {'title', 'company', 'location', 'type', 'status', 'description'}
+
 # ---------------- GET ALL ----------------
 @opp_bp.route("/", methods=["GET"])
 @jwt_required()
 def get_all():
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     opps = Opportunity.query.filter_by(admin_id=user_id).all()
 
     data = []
     for o in opps:
-        data.append({
-            "id": o.id,
-            "name": o.name,
-            "category": o.category,
-            "duration": o.duration,
-            "start_date": o.start_date,
-            "description": o.description
-        })
+        data.append(o.to_dict())
 
     return jsonify(data)
 
@@ -31,11 +27,10 @@ def get_all():
 @opp_bp.route("/", methods=["POST"])
 @jwt_required()
 def create():
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.json
 
-    required_fields = ["name", "duration", "start_date", "description",
-                       "skills", "category", "future_opportunities"]
+    required_fields = ["title", "company", "location", "type", "status", "description"]
 
     for field in required_fields:
         if not data.get(field):
@@ -43,27 +38,25 @@ def create():
 
     new_opp = Opportunity(
         admin_id=user_id,
-        name=data["name"],
-        duration=data["duration"],
-        start_date=data["start_date"],
-        description=data["description"],
-        skills=data["skills"],
-        category=data["category"],
-        future_opportunities=data["future_opportunities"],
-        max_applicants=data.get("max_applicants")
+        title=data["title"],
+        company=data["company"],
+        location=data["location"],
+        type=data["type"],
+        status=data["status"],
+        description=data["description"]
     )
 
     db.session.add(new_opp)
     db.session.commit()
 
-    return jsonify({"message": "Created successfully"})
+    return jsonify({"message": "Created successfully", "id": new_opp.id}), 201
 
 
 # ---------------- UPDATE ----------------
 @opp_bp.route("/<int:id>", methods=["PUT"])
 @jwt_required()
 def update(id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     opp = Opportunity.query.get(id)
 
@@ -73,18 +66,19 @@ def update(id):
     data = request.json
 
     for key in data:
-        setattr(opp, key, data[key])
+        if key in ALLOWED_UPDATE_FIELDS:
+            setattr(opp, key, data[key])
 
     db.session.commit()
 
-    return jsonify({"message": "Updated successfully"})
+    return jsonify({"message": "Updated successfully", "id": opp.id})
 
 
 # ---------------- DELETE ----------------
 @opp_bp.route("/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete(id):
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     opp = Opportunity.query.get(id)
 

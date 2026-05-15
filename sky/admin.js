@@ -538,7 +538,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     }
     if (!valid) { shakeForm('loginForm'); return; }
 
-    // ✅ Real API call
+    // API call
     fetch(API + '/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -607,7 +607,6 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     }
     if (!valid) { shakeForm('signupForm'); return; }
 
-    // ✅ Real API call
     fetch(API + '/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -657,7 +656,7 @@ document.getElementById('forgotForm').addEventListener('submit', function(e) {
     }
     if (!valid) { shakeForm('forgotForm'); return; }
 
-    // ✅ Real API call
+    // API call
     fetch(API + '/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

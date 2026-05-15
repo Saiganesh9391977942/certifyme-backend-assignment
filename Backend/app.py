@@ -14,7 +14,7 @@ def create_app():
     bcrypt.init_app(app)
     jwt.init_app(app)
 
-    # ── CORS (allow frontend on any port) ───
+    # ── CORS (allow frontend origins) ───
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     # ── Blueprints ──────────────────────────
@@ -29,7 +29,10 @@ def create_app():
     return app
 
 
+# For local development: python app.py
 if __name__ == '__main__':
     app = create_app()
-    app.run(host="0.0.0.0", port=10000)
-    # app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000)
+
+# For production (gunicorn): gunicorn "app:create_app()"
+# Gunicorn uses the create_app() factory directly via the Procfile
