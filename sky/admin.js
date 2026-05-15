@@ -3,10 +3,10 @@
 //  UI logic preserved · API calls wired to Flask at :5000
 // ================================================================
 
-const API = 'http://127.0.0.1:5000/api';
+const API = 'https://certifyme-backend-assignment-2.onrender.com/api';
 
 // ── Captcha ──────────────────────────────────────────────────────
-const captchas = { login:'', signup:'', forgot:'' };
+const captchas = { login: '', signup: '', forgot: '' };
 function generateCaptcha(type) {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
     let code = '';
@@ -62,8 +62,8 @@ function checkStrength(val) {
     if (/[A-Z]/.test(val)) score++;
     if (/[0-9]/.test(val)) score++;
     if (/[^A-Za-z0-9]/.test(val)) score++;
-    const labels = ['','Weak','Medium','Strong','Very Strong'];
-    const classes = ['','weak','medium','strong','very-strong'];
+    const labels = ['', 'Weak', 'Medium', 'Strong', 'Very Strong'];
+    const classes = ['', 'weak', 'medium', 'strong', 'very-strong'];
     for (let i = 1; i <= 4; i++) {
         const bar = document.getElementById('str' + i);
         bar.className = 'strength-bar';
@@ -78,10 +78,10 @@ function escapeHtml(str) {
 }
 
 // ── Auth Token helpers ────────────────────────────────────────────
-function getToken()       { return localStorage.getItem('authToken'); }
-function saveToken(t)     { localStorage.setItem('authToken', t); }
-function clearToken()     { localStorage.removeItem('authToken'); localStorage.removeItem('authEmail'); }
-function authHeaders()    { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() }; }
+function getToken() { return localStorage.getItem('authToken'); }
+function saveToken(t) { localStorage.setItem('authToken', t); }
+function clearToken() { localStorage.removeItem('authToken'); localStorage.removeItem('authEmail'); }
+function authHeaders() { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() }; }
 
 // ── Dashboard ─────────────────────────────────────────────────────
 function showDashboard(email) {
@@ -121,19 +121,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // ── Nav Items ─────────────────────────────────────────────────────
 document.querySelectorAll('.nav-item[data-page]').forEach(item => {
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function () {
         const page = this.getAttribute('data-page');
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         this.classList.add('active');
         document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
 
         const map = {
-            dashboard:    ['dashboardSection',   'Dashboard'],
-            learner:      ['learnerSection',      'Learner Management'],
-            verifier:     ['verifierSection',     'Verifier Management'],
+            dashboard: ['dashboardSection', 'Dashboard'],
+            learner: ['learnerSection', 'Learner Management'],
+            verifier: ['verifierSection', 'Verifier Management'],
             collaborator: ['collaboratorSection', 'Collaborator Management'],
-            opportunity:  ['opportunitySection',  'Opportunity Management'],
-            reports:      ['reportsSection',      'Reports and Analytics'],
+            opportunity: ['opportunitySection', 'Opportunity Management'],
+            reports: ['reportsSection', 'Reports and Analytics'],
         };
         if (map[page]) {
             document.getElementById(map[page][0]).classList.add('active');
@@ -149,11 +149,11 @@ function changeChartPeriod(period) {
         btn.classList.toggle('active', btn.textContent.toLowerCase() === period);
     });
     const chartData = {
-        daily:     'M0,120 Q50,110 100,90 T200,70 T300,50 T400,40',
-        weekly:    'M0,110 Q50,95 100,85 T200,65 T300,45 T400,35',
-        monthly:   'M0,100 Q50,85 100,75 T200,55 T300,40 T400,30',
+        daily: 'M0,120 Q50,110 100,90 T200,70 T300,50 T400,40',
+        weekly: 'M0,110 Q50,95 100,85 T200,65 T300,45 T400,35',
+        monthly: 'M0,100 Q50,85 100,75 T200,55 T300,40 T400,30',
         quarterly: 'M0,90 Q50,75 100,65 T200,50 T300,35 T400,25',
-        yearly:    'M0,80 Q50,65 100,55 T200,40 T300,30 T400,20'
+        yearly: 'M0,80 Q50,65 100,55 T200,40 T300,30 T400,20'
     };
     document.getElementById('linePath').setAttribute('d', chartData[period]);
     document.getElementById('lineArea').setAttribute('d', chartData[period] + ' L400,150 L0,150 Z');
@@ -167,7 +167,7 @@ function markAllRead() {
     document.querySelectorAll('.notif-item.unread').forEach(i => i.classList.remove('unread'));
     showToast('All notifications marked as read');
 }
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     const dropdown = document.getElementById('notificationDropdown');
     const btn = document.getElementById('notifBtn');
     if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
@@ -194,7 +194,7 @@ function openSearch() {
 function closeSearch() {
     document.getElementById('searchContainer').classList.remove('active');
 }
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
         closeSearch();
         closeCourseModal(); closeOpportunityModal(); closeOpportunityDetailsModal();
@@ -202,7 +202,7 @@ document.addEventListener('keydown', function(e) {
         closeQuickAddVerifierModal(); closeBulkUploadVerifierModal(); closeVerifierDetailsModal();
     }
 });
-document.getElementById('searchContainer').addEventListener('click', function(e) {
+document.getElementById('searchContainer').addEventListener('click', function (e) {
     if (e.target === this) closeSearch();
 });
 
@@ -216,7 +216,7 @@ function openCourseDetails(courseName, stats) {
     document.getElementById('courseModal').classList.add('active');
 }
 function closeCourseModal() { document.getElementById('courseModal').classList.remove('active'); }
-document.getElementById('courseModal').addEventListener('click', function(e) { if (e.target === this) closeCourseModal(); });
+document.getElementById('courseModal').addEventListener('click', function (e) { if (e.target === this) closeCourseModal(); });
 
 // ── Opportunity Details Modal ─────────────────────────────────────
 function openOpportunityDetails(title, details) {
@@ -239,7 +239,7 @@ function openOpportunityDetails(title, details) {
 }
 function closeOpportunityDetailsModal() { document.getElementById('opportunityDetailsModal').classList.remove('active'); }
 function applyToOpportunity() { showToast('Application submitted!'); closeOpportunityDetailsModal(); }
-document.getElementById('opportunityDetailsModal').addEventListener('click', function(e) { if (e.target === this) closeOpportunityDetailsModal(); });
+document.getElementById('opportunityDetailsModal').addEventListener('click', function (e) { if (e.target === this) closeOpportunityDetailsModal(); });
 
 // ── Collaborator Modal ────────────────────────────────────────────
 function openCollaboratorCourses(name, role) {
@@ -249,14 +249,14 @@ function openCollaboratorCourses(name, role) {
 }
 function closeCollaboratorCoursesModal() { document.getElementById('collaboratorCoursesModal').classList.remove('active'); }
 function approveCourse(n) { showToast(n + ' has been approved!'); }
-function rejectCourse(n)  { showToast(n + ' has been rejected.'); }
+function rejectCourse(n) { showToast(n + ' has been rejected.'); }
 function viewCourseDetails(n) { showToast('Viewing details for ' + n); }
-document.getElementById('collaboratorCoursesModal').addEventListener('click', function(e) { if (e.target === this) closeCollaboratorCoursesModal(); });
+document.getElementById('collaboratorCoursesModal').addEventListener('click', function (e) { if (e.target === this) closeCollaboratorCoursesModal(); });
 
 // ── Opportunity CRUD ──────────────────────────────────────────────
 function openOpportunityModal() { document.getElementById('opportunityModal').classList.add('active'); }
 function closeOpportunityModal() { document.getElementById('opportunityModal').classList.remove('active'); }
-document.getElementById('opportunityModal').addEventListener('click', function(e) { if (e.target === this) closeOpportunityModal(); });
+document.getElementById('opportunityModal').addEventListener('click', function (e) { if (e.target === this) closeOpportunityModal(); });
 
 // Load opportunities from backend and render cards
 function loadOpportunities() {
@@ -264,26 +264,26 @@ function loadOpportunities() {
     if (!token) return;
 
     fetch(API + '/opportunities/', { headers: authHeaders() })
-    .then(res => {
-        if (res.status === 401) { handleLogout(); return null; }
-        return res.json();
-    })
-    .then(data => {
-        if (!data) return;
-        const grid = document.querySelector('.opportunities-grid');
-        if (!grid) return;
+        .then(res => {
+            if (res.status === 401) { handleLogout(); return null; }
+            return res.json();
+        })
+        .then(data => {
+            if (!data) return;
+            const grid = document.querySelector('.opportunities-grid');
+            if (!grid) return;
 
-        // Remove only dynamically added cards (keep static ones if any — here we replace all)
-        grid.innerHTML = '';
+            // Remove only dynamically added cards (keep static ones if any — here we replace all)
+            grid.innerHTML = '';
 
-        if (data.length === 0) {
-            grid.innerHTML = '<p style="color:var(--qf-text-light);padding:24px;">No opportunities yet. Click "Add New Opportunity" to create one.</p>';
-            return;
-        }
+            if (data.length === 0) {
+                grid.innerHTML = '<p style="color:var(--qf-text-light);padding:24px;">No opportunities yet. Click "Add New Opportunity" to create one.</p>';
+                return;
+            }
 
-        data.forEach(opp => renderOpportunityCard(opp, grid));
-    })
-    .catch(() => {});  // silently fail — static cards still visible
+            data.forEach(opp => renderOpportunityCard(opp, grid));
+        })
+        .catch(() => { });  // silently fail — static cards still visible
 }
 
 function renderOpportunityCard(opp, grid) {
@@ -316,16 +316,16 @@ function renderOpportunityCard(opp, grid) {
 }
 
 // CREATE opportunity via API
-document.getElementById('opportunityForm').addEventListener('submit', function(e) {
+document.getElementById('opportunityForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const name        = document.getElementById('oppName').value.trim();
-    const duration    = document.getElementById('oppDuration').value.trim();
-    const startDate   = document.getElementById('oppStartDate').value;
+    const name = document.getElementById('oppName').value.trim();
+    const duration = document.getElementById('oppDuration').value.trim();
+    const startDate = document.getElementById('oppStartDate').value;
     const description = document.getElementById('oppDescription').value.trim();
-    const skillsRaw   = document.getElementById('oppSkills').value.trim();
-    const category    = document.getElementById('oppCategory').value;
-    const future      = document.getElementById('oppFuture').value.trim();
+    const skillsRaw = document.getElementById('oppSkills').value.trim();
+    const category = document.getElementById('oppCategory').value;
+    const future = document.getElementById('oppFuture').value.trim();
 
     if (!name || !duration || !startDate || !description || !skillsRaw || !category || !future) {
         showToast('Please fill all required fields');
@@ -334,11 +334,11 @@ document.getElementById('opportunityForm').addEventListener('submit', function(e
 
     // Map form fields → backend fields
     const payload = {
-        title:       name,
-        company:     category,          // using category as company
-        location:    startDate,         // using startDate as location
-        type:        duration,          // using duration as type
-        status:      'Open',
+        title: name,
+        company: category,          // using category as company
+        location: startDate,         // using startDate as location
+        type: duration,          // using duration as type
+        status: 'Open',
         description: description + '\n\nSkills: ' + skillsRaw + '\n\nFuture: ' + future
     };
 
@@ -347,30 +347,30 @@ document.getElementById('opportunityForm').addEventListener('submit', function(e
         headers: authHeaders(),
         body: JSON.stringify(payload)
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.id) {
-            showToast('Opportunity created successfully!');
-            closeOpportunityModal();
-            this.reset();
-            loadOpportunities();
-        } else {
-            showToast(data.error || 'Failed to create opportunity');
-        }
-    })
-    .catch(() => showToast('Server error. Is Flask running?'));
+        .then(res => res.json())
+        .then(data => {
+            if (data.id) {
+                showToast('Opportunity created successfully!');
+                closeOpportunityModal();
+                this.reset();
+                loadOpportunities();
+            } else {
+                showToast(data.error || 'Failed to create opportunity');
+            }
+        })
+        .catch(() => showToast('Server error. Is Flask running?'));
 });
 
 // DELETE
 function deleteOpportunity(id) {
     if (!confirm('Delete this opportunity?')) return;
     fetch(API + '/opportunities/' + id, { method: 'DELETE', headers: authHeaders() })
-    .then(res => res.json())
-    .then(data => {
-        if (data.message) { showToast('Deleted successfully'); loadOpportunities(); }
-        else showToast(data.error || 'Delete failed');
-    })
-    .catch(() => showToast('Server error'));
+        .then(res => res.json())
+        .then(data => {
+            if (data.message) { showToast('Deleted successfully'); loadOpportunities(); }
+            else showToast(data.error || 'Delete failed');
+        })
+        .catch(() => showToast('Server error'));
 }
 
 // EDIT — simple prompt-based for now (keeps UI unchanged)
@@ -380,7 +380,7 @@ function openEditOppModal(id) {
     if (!newTitle && !newStatus) return;
 
     const payload = {};
-    if (newTitle)  payload.title  = newTitle;
+    if (newTitle) payload.title = newTitle;
     if (newStatus) payload.status = newStatus;
 
     fetch(API + '/opportunities/' + id, {
@@ -388,19 +388,19 @@ function openEditOppModal(id) {
         headers: authHeaders(),
         body: JSON.stringify(payload)
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.id) { showToast('Updated!'); loadOpportunities(); }
-        else showToast(data.error || 'Update failed');
-    })
-    .catch(() => showToast('Server error'));
+        .then(res => res.json())
+        .then(data => {
+            if (data.id) { showToast('Updated!'); loadOpportunities(); }
+            else showToast(data.error || 'Update failed');
+        })
+        .catch(() => showToast('Server error'));
 }
 
 // ── Quick Add Student ─────────────────────────────────────────────
 function openQuickAddModal() { document.getElementById('quickAddModal').classList.add('active'); }
 function closeQuickAddModal() { document.getElementById('quickAddModal').classList.remove('active'); }
-document.getElementById('quickAddModal').addEventListener('click', function(e) { if (e.target === this) closeQuickAddModal(); });
-document.getElementById('quickAddForm').addEventListener('submit', function(e) {
+document.getElementById('quickAddModal').addEventListener('click', function (e) { if (e.target === this) closeQuickAddModal(); });
+document.getElementById('quickAddForm').addEventListener('submit', function (e) {
     e.preventDefault();
     showToast('Student added successfully! Email invitation sent.');
     closeQuickAddModal(); this.reset();
@@ -409,8 +409,8 @@ document.getElementById('quickAddForm').addEventListener('submit', function(e) {
 // ── Bulk Upload Students ──────────────────────────────────────────
 function openBulkUploadModal() { document.getElementById('bulkUploadModal').classList.add('active'); }
 function closeBulkUploadModal() { document.getElementById('bulkUploadModal').classList.remove('active'); }
-document.getElementById('bulkUploadModal').addEventListener('click', function(e) { if (e.target === this) closeBulkUploadModal(); });
-document.getElementById('bulkUploadForm').addEventListener('submit', function(e) {
+document.getElementById('bulkUploadModal').addEventListener('click', function (e) { if (e.target === this) closeBulkUploadModal(); });
+document.getElementById('bulkUploadForm').addEventListener('submit', function (e) {
     e.preventDefault();
     if (!document.getElementById('csvFileInput').files.length) { showToast('Please select a CSV file'); return; }
     showToast('Students uploaded successfully! Email invitations sent.');
@@ -422,15 +422,15 @@ function handleFileSelect(event) {
 }
 function downloadSampleCSV() {
     const csv = 'First Name,Last Name,Email\nJohn,Doe,john.doe@example.com\nJane,Smith,jane.smith@example.com';
-    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv], {type:'text/csv'})), download: 'sample_students.csv' });
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })), download: 'sample_students.csv' });
     a.click();
 }
 
 // ── Quick Add Verifier ────────────────────────────────────────────
 function openQuickAddVerifierModal() { document.getElementById('quickAddVerifierModal').classList.add('active'); }
 function closeQuickAddVerifierModal() { document.getElementById('quickAddVerifierModal').classList.remove('active'); }
-document.getElementById('quickAddVerifierModal').addEventListener('click', function(e) { if (e.target === this) closeQuickAddVerifierModal(); });
-document.getElementById('quickAddVerifierForm').addEventListener('submit', function(e) {
+document.getElementById('quickAddVerifierModal').addEventListener('click', function (e) { if (e.target === this) closeQuickAddVerifierModal(); });
+document.getElementById('quickAddVerifierForm').addEventListener('submit', function (e) {
     e.preventDefault();
     showToast('Verifier added successfully! Email invitation sent.');
     closeQuickAddVerifierModal(); this.reset();
@@ -439,8 +439,8 @@ document.getElementById('quickAddVerifierForm').addEventListener('submit', funct
 // ── Bulk Upload Verifiers ─────────────────────────────────────────
 function openBulkUploadVerifierModal() { document.getElementById('bulkUploadVerifierModal').classList.add('active'); }
 function closeBulkUploadVerifierModal() { document.getElementById('bulkUploadVerifierModal').classList.remove('active'); }
-document.getElementById('bulkUploadVerifierModal').addEventListener('click', function(e) { if (e.target === this) closeBulkUploadVerifierModal(); });
-document.getElementById('bulkUploadVerifierForm').addEventListener('submit', function(e) {
+document.getElementById('bulkUploadVerifierModal').addEventListener('click', function (e) { if (e.target === this) closeBulkUploadVerifierModal(); });
+document.getElementById('bulkUploadVerifierForm').addEventListener('submit', function (e) {
     e.preventDefault();
     if (!document.getElementById('csvVerifierFileInput').files.length) { showToast('Please select a CSV file'); return; }
     showToast('Verifiers uploaded successfully!');
@@ -452,7 +452,7 @@ function handleVerifierFileSelect(event) {
 }
 function downloadSampleVerifierCSV() {
     const csv = 'First Name,Last Name,Email,Subject\nDr. John,Doe,john.doe@qf.edu.qa,Mathematics\nProf. Jane,Smith,jane.smith@qf.edu.qa,Physics';
-    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv], {type:'text/csv'})), download: 'sample_verifiers.csv' });
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })), download: 'sample_verifiers.csv' });
     a.click();
 }
 
@@ -473,7 +473,7 @@ function openVerifierDetails(name, stats) {
     document.getElementById('verifierDetailsModal').classList.add('active');
 }
 function closeVerifierDetailsModal() { document.getElementById('verifierDetailsModal').classList.remove('active'); }
-document.getElementById('verifierDetailsModal').addEventListener('click', function(e) { if (e.target === this) closeVerifierDetailsModal(); });
+document.getElementById('verifierDetailsModal').addEventListener('click', function (e) { if (e.target === this) closeVerifierDetailsModal(); });
 
 // ── Student Filters ───────────────────────────────────────────────
 function filterStudents() {
@@ -491,7 +491,7 @@ function filterVerifiers() {
 
 // ── Clear errors on input ─────────────────────────────────────────
 document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('input', function() {
+    input.addEventListener('input', function () {
         this.classList.remove('error');
         const err = this.closest('.form-group')?.querySelector('.error-msg');
         if (err) err.classList.remove('show');
@@ -509,12 +509,12 @@ window.addEventListener('resize', () => {
 // ================================================================
 
 // ── LOGIN ─────────────────────────────────────────────────────────
-document.getElementById('loginForm').addEventListener('submit', function(e) {
+document.getElementById('loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
     clearAllErrors('loginForm');
     let valid = true;
 
-    const email    = document.getElementById('loginEmail').value.trim();
+    const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
     const captchaInput = document.getElementById('loginCaptchaInput').value.trim();
 
@@ -544,38 +544,38 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.token) {
-            saveToken(data.token);
-            localStorage.setItem('authEmail', email);
-            showToast('Login successful! Redirecting...');
-            generateCaptcha('login');
-            setTimeout(() => showDashboard(email), 1200);
-        } else {
-            showError('loginPasswordErr', data.error || 'Invalid email or password');
-            document.getElementById('loginPassword').classList.add('error');
+        .then(res => res.json())
+        .then(data => {
+            if (data.token) {
+                saveToken(data.token);
+                localStorage.setItem('authEmail', email);
+                showToast('Login successful! Redirecting...');
+                generateCaptcha('login');
+                setTimeout(() => showDashboard(email), 1200);
+            } else {
+                showError('loginPasswordErr', data.error || 'Invalid email or password');
+                document.getElementById('loginPassword').classList.add('error');
+                shakeForm('loginForm');
+                generateCaptcha('login');
+            }
+        })
+        .catch(() => {
+            showError('loginPasswordErr', 'Cannot reach server. Is Flask running?');
             shakeForm('loginForm');
-            generateCaptcha('login');
-        }
-    })
-    .catch(() => {
-        showError('loginPasswordErr', 'Cannot reach server. Is Flask running?');
-        shakeForm('loginForm');
-    });
+        });
 });
 
 // ── SIGNUP ────────────────────────────────────────────────────────
-document.getElementById('signupForm').addEventListener('submit', function(e) {
+document.getElementById('signupForm').addEventListener('submit', function (e) {
     e.preventDefault();
     clearAllErrors('signupForm');
     let valid = true;
 
-    const name            = document.getElementById('signupName').value.trim();
-    const email           = document.getElementById('signupEmail').value.trim();
-    const password        = document.getElementById('signupPassword').value;
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
     const confirmPassword = document.getElementById('signupConfirmPassword').value;
-    const captchaInput    = document.getElementById('signupCaptchaInput').value.trim();
+    const captchaInput = document.getElementById('signupCaptchaInput').value.trim();
 
     if (!name) {
         showError('signupNameErr', 'Please enter your full name');
@@ -612,33 +612,33 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.message) {
-            showToast('Account created successfully! Please sign in.');
-            generateCaptcha('signup');
-            this.reset();
-            checkStrength('');
-            setTimeout(() => showPage('loginPage'), 1500);
-        } else {
-            showError('signupEmailErr', data.error || 'Signup failed');
-            document.getElementById('signupEmail').classList.add('error');
+        .then(res => res.json())
+        .then(data => {
+            if (data.message) {
+                showToast('Account created successfully! Please sign in.');
+                generateCaptcha('signup');
+                this.reset();
+                checkStrength('');
+                setTimeout(() => showPage('loginPage'), 1500);
+            } else {
+                showError('signupEmailErr', data.error || 'Signup failed');
+                document.getElementById('signupEmail').classList.add('error');
+                shakeForm('signupForm');
+            }
+        })
+        .catch(() => {
+            showError('signupNameErr', 'Cannot reach server. Is Flask running?');
             shakeForm('signupForm');
-        }
-    })
-    .catch(() => {
-        showError('signupNameErr', 'Cannot reach server. Is Flask running?');
-        shakeForm('signupForm');
-    });
+        });
 });
 
 // ── FORGOT PASSWORD ───────────────────────────────────────────────
-document.getElementById('forgotForm').addEventListener('submit', function(e) {
+document.getElementById('forgotForm').addEventListener('submit', function (e) {
     e.preventDefault();
     clearAllErrors('forgotForm');
     let valid = true;
 
-    const email        = document.getElementById('forgotEmail').value.trim();
+    const email = document.getElementById('forgotEmail').value.trim();
     const captchaInput = document.getElementById('forgotCaptchaInput').value.trim();
 
     if (!email || !isValidEmail(email)) {
@@ -662,14 +662,14 @@ document.getElementById('forgotForm').addEventListener('submit', function(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
     })
-    .then(res => res.json())
-    .then(data => {
-        showToast(data.message || 'Reset link sent to your email!');
-        generateCaptcha('forgot');
-        this.reset();
-    })
-    .catch(() => {
-        showToast('Reset link sent to your email!'); // still show success for UX
-        this.reset();
-    });
+        .then(res => res.json())
+        .then(data => {
+            showToast(data.message || 'Reset link sent to your email!');
+            generateCaptcha('forgot');
+            this.reset();
+        })
+        .catch(() => {
+            showToast('Reset link sent to your email!'); // still show success for UX
+            this.reset();
+        });
 });
